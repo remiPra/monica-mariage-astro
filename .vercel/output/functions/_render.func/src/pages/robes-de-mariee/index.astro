@@ -1,0 +1,51 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+// Importer les JSON des robes
+import sirene from "../../data/forme-sirene.json";
+import princesse from "../../data/forme-princesse.json";
+import minimaliste from "../../data/minimaliste.json";
+import boheme from "../../data/style-boheme-chic.json";
+
+// Fusionner les JSON en un seul tableau
+const allRobes = [...sirene, ...princesse, ...minimaliste, ...boheme];
+
+// Récupérer la catégorie et le nom de la robe depuis l’URL
+const { category, robe } = Astro.params;
+
+// Trouver la robe correspondante dans les JSON
+const robeData = allRobes.find(r => 
+  r.category === category && 
+  r.dressName.replace(/\s+/g, "-").toLowerCase() === robe
+);
+
+if (!robeData) {
+  throw new Error("Robe non trouvée !");
+}
+---
+
+<Layout
+  title={`${robeData.dressName} - Monica Mariage`}
+  description={`Découvrez la robe ${robeData.dressName}, disponible chez Monica Mariage Toulouse.`}
+>
+  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">
+        {robeData.dressName}
+      </h1>
+      <img
+        src={robeData.imageUrl}
+        alt={robeData.dressName}
+        class="w-full max-h-[500px] object-cover rounded-lg shadow-lg"
+      />
+      <p class="mt-4 text-lg text-black">
+        {robeData.description || "Découvrez cette robe de mariée élégante et unique."}
+      </p>
+      <a href="/prendre-rendez-vous">
+        <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
+          Prendre rendez-vous
+        </button>
+      </a>
+    </div>
+  </section>
+</Layout>

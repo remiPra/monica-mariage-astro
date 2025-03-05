@@ -1,0 +1,4 @@
+{
+  "builds": [{ "src": "src/pages/**/*", "use": "@astrojs/vercel/server" }],
+  "routes": [{ "src": "/(.*)", "dest": "/" }]
+}
