@@ -1,4 +1,14 @@
 {
-  "builds": [{ "src": "src/pages/**/*", "use": "@astrojs/vercel/server" }],
-  "routes": [{ "src": "/(.*)", "dest": "/" }]
+  "builds": [
+    {
+      "src": "astro.config.mjs",
+      "use": "@astrojs/vercel/server"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
 }
