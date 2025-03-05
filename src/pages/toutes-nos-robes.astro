@@ -33,7 +33,7 @@ const robes = allRobes.reduce((acc, robe) => {
     <div class="flex justify-center px-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
         {robes.map((robe) => (
-         <a href={`/robes-de-mariee/${robe.category}/${robe.dressName.replace(/\s+/g, "-").toLowerCase()}`} class="text-center cursor-pointer">
+  <a href={`/robes-de-mariee/${robe.category}/${robe.dressName.replace(/\s+/g, "-").toLowerCase()}`} class="text-center cursor-pointer">
   <div class="relative">
     <div class="absolute inset-0 bg-[#af7749] opacity-20 z-10"></div>
     <img
@@ -52,6 +52,7 @@ const robes = allRobes.reduce((acc, robe) => {
     Découvrir cette robe
   </button>
 </a>
+
 
         ))}
       </div>

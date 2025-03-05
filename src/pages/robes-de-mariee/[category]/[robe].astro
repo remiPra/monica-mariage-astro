@@ -1,0 +1,72 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+
+// Importer les fichiers JSON (Assurez-vous que ces fichiers existent)
+import sirene from "../../../data/forme-sirene.json";
+import princesse from "../../../data/forme-princesse.json";
+import minimaliste from "../../../data/minimaliste.json";
+import boheme from "../../../data/style-boheme-chic.json";
+
+// 🛠️ Fonction pour créer un slug propre
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
+
+// ✅ Fusionner toutes les robes en un seul tableau
+const allRobes = [...sirene, ...princesse, ...minimaliste, ...boheme];
+
+// 🚀 **Générer les routes dynamiques**
+export async function getStaticPaths() {
+  const paths = allRobes.map(robe => ({
+    params: {
+      category: robe.category, // Utilisation de la catégorie comme paramètre
+      robe: slugify(robe.dressName) // Création du slug de la robe
+    }
+  }));
+
+  return { paths };
+}
+
+// 🔍 **Récupérer la catégorie et le slug de l'URL**
+const { category, robe } = Astro.params;
+
+// 🏷️ **Trouver la robe correspondante**
+const robeData = allRobes.find(r => 
+  r.category === category && 
+  slugify(r.dressName) === robe
+);
+
+// 🚨 **Si aucune robe trouvée, afficher une erreur**
+if (!robeData) {
+  throw new Error(`Robe non trouvée ! Catégorie: ${category}, Slug: ${robe}`);
+}
+---
+
+<Layout
+  title={`${robeData.dressName} - Monica Mariage`}
+  description={`Découvrez la robe ${robeData.dressName}, disponible chez Monica Mariage Toulouse.`}
+>
+  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">
+        {robeData.dressName}
+      </h1>
+      <img
+        src={robeData.imageUrl}
+        alt={robeData.dressName}
+        class="w-full max-h-[500px] object-cover rounded-lg shadow-lg"
+      />
+      <p class="mt-4 text-lg text-black">
+        {robeData.description || "Découvrez cette robe de mariée élégante et unique."}
+      </p>
+      <a href="/prendre-rendez-vous">
+        <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
+          Prendre rendez-vous
+        </button>
+      </a>
+    </div>
+  </section>
+</Layout>
